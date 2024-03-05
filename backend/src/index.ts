@@ -40,6 +40,10 @@ app.get("/", async (req: Request, res: Response) => {
   res.json({ message: "hello from express endpint!" });
 });
 
+app.get('*', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'))
+})
+
 app.listen(7000, () => {
   console.log("Server running on localhost:7000");
 });
