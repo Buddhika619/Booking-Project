@@ -1,16 +1,47 @@
 import { useFormContext } from "react-hook-form";
+import React from "react";
 import { HotelFormData } from "./MangeHotelForm";
 
 const ImagesSection = () => {
   const {
     register,
     formState: { errors },
+    watch,
+    setValue,
   } = useFormContext<HotelFormData>();
+
+  const existingImageUrls = watch("imageUrls");
+
+  const handeleDelete = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    imageUrl: string
+  ) => {
+    event.preventDefault();
+    setValue(
+      "imageUrls",
+      existingImageUrls.filter((url) => url !== imageUrl)
+    );
+  };
 
   return (
     <div>
       <h2 className="text-2xl font-bold mb-3">Images</h2>
       <div className="border rounded p-4 flex flex-col gap-4">
+        {existingImageUrls && (
+          <div className="grid grid-cols-6 gap-4">
+            {existingImageUrls.map((url) => (
+              <div className="relative group" key={url}>
+                <img src={url} className="min-h-full object-cover" />
+                <button
+                  onClick={(event) => handeleDelete(event, url)}
+                  className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 text-white"
+                >
+                  Delete
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
         <input
           multiple
           accept="image/*"
@@ -18,7 +49,7 @@ const ImagesSection = () => {
           className="w-full text-gray-700 font-normal"
           {...register("imageFiles", {
             validate: (imageFiles) => {
-              const totalLength = imageFiles.length;
+              const totalLength = imageFiles.length + (existingImageUrls?.length || 0);
 
               if (totalLength === 0) {
                 return "At least one image should be added";
@@ -35,7 +66,7 @@ const ImagesSection = () => {
       </div>
       {errors.imageFiles && (
         <span className="text-red-500 text-sm font-bold">
-            {errors.imageFiles.message}
+          {errors.imageFiles.message}
         </span>
       )}
     </div>
