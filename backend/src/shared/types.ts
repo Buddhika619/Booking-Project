@@ -1,3 +1,13 @@
+export type UserType = {
+  _id: string;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+};
+
+export type ReturnUserType = Omit<UserType, "password">;
+
 export type HotelType = {
     _id: string;
     userId: string;
@@ -24,3 +34,4 @@ export type HotelType = {
       pages: number;
     }
   }
+

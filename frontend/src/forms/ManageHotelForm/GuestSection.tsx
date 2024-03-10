@@ -34,9 +34,7 @@ const GuestSection = () => {
             className="border rounded w-full py-2 px-3 font-normal"
             type="number"
             min="1"
-            {...register("childCount", {
-              required: "This field is required",
-            })}
+            {...register("childCount", )}
           />
           {errors.childCount && (
             <span className="text-red-500 text-sm font-bold">

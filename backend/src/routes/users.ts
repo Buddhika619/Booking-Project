@@ -2,8 +2,28 @@ import express, { Request, Response } from "express";
 import User from "../models/users";
 import jwt from "jsonwebtoken";
 import { check, validationResult } from "express-validator";
+import verifyToken from "../middleware/auth";
 
 const router = express.Router();
+
+router.get("/me", verifyToken, async (req: Request, res: Response) => {
+  const userId = req.userId;
+
+
+
+  try {
+    const user = await User.findById(userId).select("-password");
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    res.json(user)
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+});
 
 router.post(
   "/register",
@@ -47,7 +67,7 @@ router.post(
         maxAge: 86400000,
       });
 
-      return res.status(200).json({message: 'user registered!'});
+      return res.status(200).json({ message: "user registered!" });
     } catch (error) {
       console.log(error);
       res.status(500).send({ message: "Something went Wrong" });

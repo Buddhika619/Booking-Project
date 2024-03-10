@@ -7,6 +7,7 @@ import Pagination from "../components/Pagination";
 import StarRatingFilter from "../components/StarRatingFilter";
 import HotelTypesFilter from "../components/HotelTypesFilter";
 import FacilitiesFilter from "../components/FacilitiesFilter";
+import PriceFilter from "../components/PriceFilter";
 
 const Search = () => {
   const search = useSerachContext();
@@ -14,6 +15,8 @@ const Search = () => {
   const [selectedStars, setSelectedStar] = useState<string[]>([]);
   const [selectedHotelTypes, setSelectedHotelTypes] = useState<string[]>([]);
   const [selectedFacilities, setSelectedFacilites] = useState<string[]>([]);
+  const [selectedPrice, setSelectedPrice] = useState<number | undefined>();
+  const [sortOption, setSortOption] = useState<string>("");
 
   const searchParams = {
     destination: search.destination,
@@ -24,7 +27,9 @@ const Search = () => {
     page: page.toString(),
     stars: selectedStars,
     types: selectedHotelTypes,
-    facilities: selectedFacilities
+    facilities: selectedFacilities,
+    maxPrice: selectedPrice?.toString(),
+    sortOption
   };
 
   const { data: hotelData } = useQuery(["searchHotels", searchParams], () =>
@@ -41,7 +46,9 @@ const Search = () => {
     );
   };
 
-  const handleHotelTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleHotelTypeChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const hotelType = event.target.value;
 
     setSelectedHotelTypes((prevHotelTypes) =>
@@ -50,7 +57,6 @@ const Search = () => {
         : prevHotelTypes.filter((type) => type !== hotelType)
     );
   };
-
 
   const handleFacilityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const facility = event.target.value;
@@ -79,9 +85,14 @@ const Search = () => {
             onChange={handleHotelTypeChange}
           />
 
-<FacilitiesFilter
+          <FacilitiesFilter
             selectedFacilites={selectedFacilities}
             onChange={handleFacilityChange}
+          />
+
+          <PriceFilter
+            selectedPrice={selectedPrice}
+            onChange={(value?: number) => setSelectedPrice(value)}
           />
         </div>
       </div>
@@ -92,6 +103,21 @@ const Search = () => {
             {hotelData?.pagination.total} Hotels found
             {search.destination ? ` in ${search.destination}` : ""}
           </span>
+
+          <select
+            value={sortOption}
+            className="p-2 border rounded-md"
+            onChange={(event) => setSortOption(event.target.value)}
+          >
+            <option value="starRating">Sort By</option>
+            <option value="starRating">Star Rating</option>
+            <option value="pricePerNightAsc">
+              Price Per Night (low to high)
+            </option>
+            <option value="pricePerNightDesc">
+              Price Per Night (high to low)
+            </option>
+          </select>
         </div>
         {hotelData?.data.map((hotel) => (
           <SearchResultsCard hotel={hotel} />
