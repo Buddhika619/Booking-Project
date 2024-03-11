@@ -19,7 +19,6 @@ test.beforeEach(async ({ page }) => {
   await expect(page.getByText("Sign in Succesful!")).toBeVisible();
 });
 
-
 test("should allow user to add a hotel", async ({ page }) => {
   await page.goto(`${UI_URL}add-hotel`);
 

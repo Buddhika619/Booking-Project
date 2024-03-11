@@ -23,6 +23,8 @@ const GuestInfoForm = ({ hotelId, pricePerNight }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  console.log(search);
+
   const {
     watch,
     register,

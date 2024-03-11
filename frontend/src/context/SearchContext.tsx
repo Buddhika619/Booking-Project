@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+
 type SearchContext = {
   destination: string;
   checkIn: Date;
@@ -14,6 +15,7 @@ type SearchContext = {
     childCount: number
   ) => void;
 };
+
 const SearchContext = React.createContext<SearchContext | undefined>(undefined);
 
 type SearchContextProviderProps = {
@@ -38,10 +40,10 @@ export const SearchContextProider = ({
     parseInt(sessionStorage.getItem("adultCount") || "1")
   );
   const [childCount, setChildCount] = useState<number>(() =>
-    parseInt(sessionStorage.getItem("childCount") || "0")
+    parseInt(sessionStorage.getItem("childCount") || "1")
   );
   const [hotelId, setHotelId] = useState<string>(
-    () => sessionStorage.getItem("hotelId") || ""
+    () => sessionStorage.getItem("hotelID") || ""
   );
 
   const saveSearchValues = (
@@ -68,7 +70,7 @@ export const SearchContextProider = ({
     sessionStorage.setItem("childCount", childCount.toString());
 
     if (hotelId) {
-      sessionStorage.setItem("hoteId", hotelId);
+      sessionStorage.setItem("hotelId", hotelId);
     }
   };
 
@@ -78,9 +80,9 @@ export const SearchContextProider = ({
         destination,
         checkIn,
         checkOut,
-        hotelId,
         adultCount,
         childCount,
+        hotelId,
         saveSearchValues,
       }}
     >
