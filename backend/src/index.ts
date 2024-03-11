@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import userRoutes from "./routes/users";
 import authRoutes from "./routes/auth";
 import hotelRoutes from './routes/hotels'
+import bookingRoutes from './routes/my-bookings'
 import cookieParser from "cookie-parser";
 import path from "path";
 import myHotelsRoutes from './routes/my-hotels'
@@ -37,6 +38,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/my-hotels", myHotelsRoutes);
 app.use("/api/hotels", hotelRoutes);
+app.use("/api/my-bookings", bookingRoutes);
 
 app.get("/", async (req: Request, res: Response) => {
   res.json({ message: "hello from express endpint!" });

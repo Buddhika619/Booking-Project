@@ -181,6 +181,14 @@ export const fetchHotelById = async (hotelId: string): Promise<HotelType> => {
   return response.json();
 };
 
+export const fetchHotels = async (): Promise<HotelType[]> => {
+  const response = await fetch(`${API_BASE_URL}/api/hotels`);
+  if (!response.ok) {
+    throw new Error("Error fetching hotels");
+  }
+  return response.json();
+};
+
 export const fetchCurrentUser = async (): Promise<ReturnUserType> => {
   const response = await fetch(`${API_BASE_URL}/api/users/me`, {
     credentials: "include",
@@ -248,3 +256,4 @@ export const fetchMyBookings = async (): Promise<HotelType[]> => {
 
   return response.json();
 };
+
